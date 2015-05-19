@@ -38,6 +38,12 @@ exports.play = function (req, res) {
     if (req.params[2]) {
         req.session.puzzle.size = req.params[2];
     }
+    if (req.params[4]) {
+        req.session.puzzle.dim = req.params[4];
+    }
+    if (req.params[6]) {
+        req.session.puzzle.max = req.params[6];
+    }
     res.json(newGame());
 };
 
@@ -57,18 +63,17 @@ exports.mark = function (req, res) {
         for (i=0; i<move.length; i++) {
             for (j=0; j<move.length; j++) {
                 if (req.session.puzzle.data[i] === parseInt(move[j])) {
-                    
                     if (i === j) {
                         black_dots++;
                     } else {
-                        white_dots++;
+                        white_dots++; // białych za dużo, jak dana liczba się powtarza
                     }
                 }
             }
         }
         
         var wiadomosc = "";
-        if (black_dots === req.session.puzzle.size) {
+        if (black_dots == req.session.puzzle.size) {
             wiadomosc = "Gratulacje! Koniec gry";  
         } else {
             wiadomosc = "Graj dalej";
